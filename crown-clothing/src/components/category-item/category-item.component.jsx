@@ -1,5 +1,11 @@
 import "./category-item.styles.scss";
 
+/**
+ *
+ * @param {object} categories- An object containing the shop categories like hats, jackets etc
+ * @returns {jsx} returns the jsx for category items
+ */
+
 const CategoryItem = ({ category }) => {
   const { imageUrl, title } = category;
 
