@@ -9,6 +9,9 @@ import {
   signInWithRedirect,
   signInWithPopup,
   GoogleAuthProvider,
+  siginInWithGoogleRedirect,
+  sendPasswordResetEmail,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
@@ -28,21 +31,30 @@ const firebaseConfig = {
 //The CRUD functionalities are going to happen using this firebase app instance
 const firebaseApp = initializeApp(firebaseConfig);
 
-const provider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
 
-provider.setCustomParameters({
+googleProvider.setCustomParameters({
   prompt: "select_account",
 });
 
 export const auth = getAuth();
 
-export const signInWithGooglePopup = async () => {
-  return signInWithPopup(auth, provider);
+export const signInWithGooglePopup = () => {
+  return signInWithPopup(auth, googleProvider);
 };
+
+export const signInWithGoogleRedirect = () =>
+  signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
 
-export const createUserDocumentFromAuth = async (userAuth) => {
+export const createUserDocumentFromAuth = async (
+  userAuth,
+  additionalInformation = {}
+) => {
+  if (!userAuth) {
+    return;
+  }
   const userDocRef = doc(db, "users", userAuth.uid);
 
   const userSnapshot = await getDoc(userDocRef);
@@ -60,6 +72,7 @@ export const createUserDocumentFromAuth = async (userAuth) => {
         displayName,
         email,
         createdAt,
+        ...additionalInformation,
       });
     } catch (error) {
       console.log("error creating the user", error);
@@ -70,7 +83,15 @@ export const createUserDocumentFromAuth = async (userAuth) => {
 
   //if user data exists
 
-  
-
   //return userDocRef
+};
+
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+  //if email and password is not provided then don't create the user
+  if (!email || !password) {
+    return;
+  }
+
+  //if email and password is provided then create the user and return it
+  return await createUserWithEmailAndPassword(auth, email, password);
 };
