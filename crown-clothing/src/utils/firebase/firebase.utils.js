@@ -9,9 +9,8 @@ import {
   signInWithRedirect,
   signInWithPopup,
   GoogleAuthProvider,
-  siginInWithGoogleRedirect,
-  sendPasswordResetEmail,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
@@ -78,13 +77,12 @@ export const createUserDocumentFromAuth = async (
       console.log("error creating the user", error);
     }
 
+    //if user data exists
     return userDocRef;
   }
-
-  //if user data exists
-
-  //return userDocRef
 };
+
+//Following function creates the user with given email and password
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   //if email and password is not provided then don't create the user
@@ -94,4 +92,20 @@ export const createAuthUserWithEmailAndPassword = async (email, password) => {
 
   //if email and password is provided then create the user and return it
   return await createUserWithEmailAndPassword(auth, email, password);
+};
+
+/**
+ *
+ * @param {string} email: receives an argument as email
+ * @param {*} password : receives another argument as password
+ * @returns sign in the user with provided email and password
+ */
+
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+  //if user does not give email and password then this function will not run
+  if (!email || !password) {
+    return;
+  }
+
+  return await signInWithEmailAndPassword(auth, email, password);
 };

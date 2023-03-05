@@ -3,7 +3,7 @@ import "./form-input.styles.scss";
 //this is a generalised form input component
 
 const FormInput = ({ label, inputOptions }) => {
-  console.log(inputOptions);
+  // console.log(inputOptions);
   //   inputOptions contains the data related to input fields
   return (
     <div className="group">
