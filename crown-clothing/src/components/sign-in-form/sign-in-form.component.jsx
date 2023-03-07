@@ -1,10 +1,11 @@
 import { async } from "@firebase/util";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import FormInput from "../form-input/form-input.component";
 
-//importing the button component
-import "../button/button.component";
+import Button from "../button/button.component";
+
+import { UserContext } from "../../contexts/user.context";
 
 import {
   // createAuthUserWithEmailAndPassword,
@@ -14,7 +15,6 @@ import {
 } from "../../utils/firebase/firebase.utils";
 
 import "./sign-in-form.styles.scss";
-import Button from "../button/button.component";
 
 const defaultFormFields = {
   email: "",
@@ -33,10 +33,8 @@ const SignInForm = () => {
 
   //method for signing with google
   const signInWithGoogle = async () => {
-    const { user } = await signInWithGooglePopup();
-
-    //After signin with googlePopup create the user: here we are passing the user in createUserDocumentFromAuth
-    await createUserDocumentFromAuth(user);
+    //getting the user object from googlePoput when it selects a account or null if nothing is selected
+    await signInWithGooglePopup();
   };
 
   const handleSubmit = async (event) => {
@@ -44,11 +42,12 @@ const SignInForm = () => {
 
     try {
       //signin with email and password
-      const response = await signInAuthUserWithEmailAndPassword(
+      //we get appropriate user auth as a response whenever user sign in successfully
+      const { user } = await signInAuthUserWithEmailAndPassword(
         email,
         password
       );
-      console.log(response);
+
       resetFormFields();
     } catch (error) {
       switch (error.code) {
@@ -56,7 +55,7 @@ const SignInForm = () => {
         case "auth/wrong-password":
           alert("incorrect credentials, please try again!");
           break;
-          //If the user is not found with email, then 
+        //If the user is not found with email, then
         case "auth / user - not - found":
           alert("User not found, create your account first!");
           break;
