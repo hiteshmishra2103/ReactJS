@@ -11,16 +11,16 @@ import { CartContext } from "../../contexts/cart.context";
 import "./cart-icon.styles.scss";
 
 const CartIcon = () => {
-  const { isCartOpen, setIsCartOpen } = useContext(CartContext);
+  const { isCartOpen, setIsCartOpen, cartCount } = useContext(CartContext);
 
   //creating a toggle i.e: if the IsCartOpen value is true then change it to false and vice-versa
-  
+
   const toggleIsCartOpen = () => setIsCartOpen(!isCartOpen);
 
   return (
     <div className="cart-icon-container" onClick={toggleIsCartOpen}>
       <ShoppingIcon className="shopping-icon" />
-      <span className="item-count">0</span>
+      <span className="item-count">{cartCount}</span>
     </div>
   );
 };
