@@ -1,2 +1,5 @@
+/* Below line is refering that whenever you get a request for /anything redirect them to index.html
+and then just return the status of 200, It is for redirects for netlify*/
+
 /* /index.html 200
 
