@@ -15,7 +15,16 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  writeBatch,
+  query,
+  getDocs,
+} from "firebase/firestore";
 // Web app's Firebase configuration
 //This config is going to be able to allow us to make firebase actions, CRUD actions
 //to save, read, update things to our specific instance of our database
@@ -48,6 +57,63 @@ export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
+
+/**
+ *
+ * @param {string} collectionKey for examples users and categories as a key
+ * @param {objects} objectsToAdd to add
+ * @description this is a async function, used to add new collections as well as adding documents inside of
+ * that collection
+ */
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  //collectionRef tells which database we are using, collection key is the title of the collection
+
+  const collectionRef = collection(db, collectionKey);
+
+  //instantiating the batch
+  const batch = writeBatch(db);
+
+  objectsToAdd.forEach((object) => {
+    //docref will give us the reference to the document with the object.title as a key in this case
+    // even if it doesn't exist, as it will create new one
+
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+
+    //create a new document based on the object and document reference
+    batch.set(docRef, object);
+  });
+
+  //waiting for the batch to set the objects in database
+  await batch.commit();
+  console.log("done");
+};
+
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, "categories");
+
+  const q = query(collectionRef);
+
+  const querySnapshot = await getDocs(q);
+
+  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+
+  return categoryMap;
+};
+
+/*
+{
+  hats
+  }
+}
+*/
 
 export const createUserDocumentFromAuth = async (
   userAuth,
