@@ -8,9 +8,14 @@ import { CategoriesContext } from "../../contexts/categories.context";
 import ProductCard from "../../components/product-card/product-card.component";
 
 const Category = () => {
+
+  //getting the value of parameter after /shop/:param
   const { category } = useParams();
+
+  //getting and storing the data of appropriate category form CategoriesContext to categoriesMap
   const { categoriesMap } = useContext(CategoriesContext);
 
+  //Setting the value of products to suitable category items
   const [products, setProducts] = useState(categoriesMap[category]);
 
   //Products will only update if either category or categoriesMap changes
@@ -19,6 +24,7 @@ const Category = () => {
     setProducts(categoriesMap[category]);
   }, [category, categoriesMap]);
 
+  //returning the items matching to the suitable category 
   return (
     <Fragment>
       {" "}
