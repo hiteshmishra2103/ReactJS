@@ -1,9 +1,10 @@
 //this file contains everything related to users, authentication and store those users
 
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useReducer } from "react";
+
+import createAction from "../utils/reducer/reducer.utils";
 
 //creating the context for storing the users
-
 //creating the context and passing the default values to it
 
 import {
@@ -16,8 +17,51 @@ export const UserContext = createContext({
   setCurrentUser: () => null,
 });
 
+export const USER_ACTION_TYPES = {
+  SET_CURRENT_USER: "SET_CURRENT_USER",
+};
+
+const UserReducer = (state, action) => {
+
+  const { type, payload } = action;
+
+  switch (type) {
+    case USER_ACTION_TYPES.SET_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: payload,
+      };
+
+    case "increment":
+      return {
+        value: state.value + 1,
+      };
+
+    default:
+      throw new Error(`Unhandled type ${type} in userReducer`);
+  }
+
+  return {
+    currentUser: payload,
+  };
+};
+
+const INITIAL_STATE = {
+  currentUser: null,
+};
+
 export const UserProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [state, dispatch] = useReducer(UserReducer, INITIAL_STATE);
+
+  const { currentUser } = state;
+  
+
+  console.log(currentUser);
+
+  const setCurrentUser = (user) => {
+    dispatch(createAction(USER_ACTION_TYPES.SET_CURRENT_USER, user));
+  };
+
   const value = { currentUser, setCurrentUser };
 
   useEffect(() => {
@@ -30,7 +74,7 @@ export const UserProvider = ({ children }) => {
       //setting the currentUser to user object if user is signed in, and if user signed out it will store
       //null
       setCurrentUser(user);
-    });   
+    });
     return unsubscribe;
   }, []);
 
@@ -38,3 +82,11 @@ export const UserProvider = ({ children }) => {
   //to the value inside of UserContext
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
+
+/*
+const userReducer=(state, action)=>{
+  return {
+    currentUser:null
+  }
+}
+*/
