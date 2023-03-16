@@ -24,6 +24,7 @@ import {
   writeBatch,
   query,
   getDocs,
+  DocumentSnapshot,
 } from "firebase/firestore";
 // Web app's Firebase configuration
 //This config is going to be able to allow us to make firebase actions, CRUD actions
@@ -98,22 +99,8 @@ export const getCategoriesAndDocuments = async () => {
 
   const querySnapshot = await getDocs(q);
 
-  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
-    const { title, items } = docSnapshot.data();
-
-    acc[title.toLowerCase()] = items;
-    return acc;
-  }, {});
-
-  return categoryMap;
-};
-
-/*
-{
-  hats
-  }
+  return querySnapshot.docs.map((docSnapshot)=>docSnapshot.data())
 }
-*/
 
 export const createUserDocumentFromAuth = async (
   userAuth,

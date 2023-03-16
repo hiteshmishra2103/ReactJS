@@ -1,12 +1,10 @@
 //this file contains the code related to the cart-dropdown
+import { useSelector } from "react-redux";
 
-import { useContext } from "react";
-
-import { Form, useNavigate } from "react-router-dom";
-
-import { CartContext } from "../../../contexts/cart.context";
+import { useNavigate } from "react-router-dom";
 
 import CartItem from "../../cart-item/cart-item.component";
+import { selectCartItems } from "../../../store/cart/cart.selector";
 
 import {
   CartDropdownContainer,
@@ -17,7 +15,7 @@ import {
 import Button from "../../button/button.component";
 
 const CartDropdown = () => {
-  const { cartItems } = useContext(CartContext);
+  const cartItems = useSelector(selectCartItems);
 
   const navigate = useNavigate();
 

@@ -10,6 +10,21 @@ import logger from "redux-logger";
 //root-reducer
 import { rootReducer } from "./root-reducer";
 
+const loggerMiddleware = (store) => (next) => (action) => {
+  //if there is no types on actions on them
+  if (!action.type) {
+    return next(action);
+  }
+
+  console.log("type: ", action.type);
+  console.log("payload: ", action.payload);
+  console.log("currentState: ", store.getState());
+
+  next(action);
+
+  console.log("next state: ", store.getState());
+};
+
 //middleware is a helper that run before an action hits the reducer and they log out the state
 // i.e action will hit middleware first
 const middleWares = [logger];

@@ -1,30 +1,35 @@
-import { useContext, useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
+
+import { useSelector } from "react-redux";
 
 import { useParams } from "react-router-dom";
 
 import "./category.styles.scss";
 
-import { CategoriesContext } from "../../contexts/categories.context";
 import ProductCard from "../../components/product-card/product-card.component";
 
+import { selectCategoriesMap } from "../../store/category/category.selector";
+
 const Category = () => {
-
   //getting the value of parameter after /shop/:param
-  const { category } = useParams();
+  const { category } = useParams(); 
 
-  //getting and storing the data of appropriate category form CategoriesContext to categoriesMap
-  const { categoriesMap } = useContext(CategoriesContext);
-
-  //Setting the value of products to suitable category items
+  console.log("rendering/re-rendering category component");
+  //getting and storing the data of appropriate category form CategoriesReducer to categoriesMap
+  const categoriesMap = useSelector(selectCategoriesMap);
+ 
+   //Setting the value of products to suitable category items
   const [products, setProducts] = useState(categoriesMap[category]);
+
 
   //Products will only update if either category or categoriesMap changes
 
   useEffect(() => {
+    console.log("effect fired calling setProducts");
     setProducts(categoriesMap[category]);
   }, [category, categoriesMap]);
 
-  //returning the items matching to the suitable category 
+  //returning the items matching to the suitable category
   return (
     <Fragment>
       {" "}
