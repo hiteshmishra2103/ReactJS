@@ -8,24 +8,18 @@ import CategoriesPreview from "../categories-preview/categories-preview.componen
 
 import Category from "../category/category.component";
 
-import { getCategoriesAndDocuments } from "../../utils/firebase/firebase.utils";
-import { setCategories } from "../../store/category/category.action";
+import { fetchCategoriesAsync } from "../../store/category/category.action";
 
-import "./shop.styles.scss";
 import React from "react";
 
 const Shop = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const getCategoriesMap = async () => {
-      const categoriesArray = await getCategoriesAndDocuments("categories");
-      dispatch(setCategories(categoriesArray));
-    };  
-
-    getCategoriesMap();
+    //following is the regular dispatch which triggers the moment Shop component mounts
+    dispatch(fetchCategoriesAsync());
   }, []);
-
+   
   return (
     <Routes>
       <Route index element={<CategoriesPreview />} />

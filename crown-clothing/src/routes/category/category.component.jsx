@@ -1,45 +1,40 @@
 import { useState, useEffect, Fragment } from "react";
-
 import { useSelector } from "react-redux";
-
 import { useParams } from "react-router-dom";
 
-import "./category.styles.scss";
-
 import ProductCard from "../../components/product-card/product-card.component";
+import Spinner from "../../components/spinner/spinner.component";
 
-import { selectCategoriesMap } from "../../store/category/category.selector";
+import {
+  selectCategoriesMap,
+  selectCategoriesIsLoading,
+} from "../../store/category/category.selector";
+
+import { CategoryContainer, Title } from "./category.styles";
 
 const Category = () => {
-  //getting the value of parameter after /shop/:param
-  const { category } = useParams(); 
-
-  console.log("rendering/re-rendering category component");
-  //getting and storing the data of appropriate category form CategoriesReducer to categoriesMap
+  const { category } = useParams();
   const categoriesMap = useSelector(selectCategoriesMap);
- 
-   //Setting the value of products to suitable category items
+  const isLoading = useSelector(selectCategoriesIsLoading);
   const [products, setProducts] = useState(categoriesMap[category]);
 
-
-  //Products will only update if either category or categoriesMap changes
-
   useEffect(() => {
-    console.log("effect fired calling setProducts");
     setProducts(categoriesMap[category]);
   }, [category, categoriesMap]);
 
-  //returning the items matching to the suitable category
   return (
     <Fragment>
-      {" "}
-      <h2 className="category-title">{category.toLocaleUpperCase()}</h2>
-      <div className="category-container">
-        {products &&
-          products.map((product) => {
-            return <ProductCard key={product.id} product={product} />;
-          })}
-      </div>
+      <Title>{category.toUpperCase()}</Title>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <CategoryContainer>
+          {products &&
+            products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+        </CategoryContainer>
+      )}
     </Fragment>
   );
 };

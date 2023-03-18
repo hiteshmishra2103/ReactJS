@@ -1,7 +1,7 @@
 //Navigation bar is the top level template which we want to persist in every route, to achieve this
 //we imported it
 
-import { Fragment} from "react";
+import { Fragment } from "react";
 import { Outlet, Link } from "react-router-dom";
 
 import { ReactComponent as CrownLogo } from "../assets/crown.svg";
@@ -12,7 +12,7 @@ import { selectCurrentUser } from "../store/user/user.selector";
 
 import { auth, signOutUser } from "../utils/firebase/firebase.utils";
 
-import CartDropdown from "../components/cart-icon/cart-dropdown/cart-dropdown.component";
+import CartDropdown from "../components/cart-dropdown/cart-dropdown.component";
 
 import { selectIsCartOpen } from "../store/cart/cart.selector";
 
