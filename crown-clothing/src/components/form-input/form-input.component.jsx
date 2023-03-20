@@ -1,16 +1,11 @@
-import {FormInputLabel,Input,Group} from "./form-input.styles";
+import { FormInputLabel, Input, Group } from "./form-input.styles";
 
-//this is a generalised form input component
-
-const FormInput = ({ label, inputOptions }) => {
-  // console.log(inputOptions);
-  //   inputOptions contains the data related to input fields
+const FormInput = ({ label, ...otherProps }) => {
   return (
     <Group>
-      <Input {...inputOptions} />
-
+      <Input {...otherProps} />
       {label && (
-        <FormInputLabel shrink={inputOptions.value.length}>
+        <FormInputLabel shrink={otherProps.value.length}>
           {label}
         </FormInputLabel>
       )}

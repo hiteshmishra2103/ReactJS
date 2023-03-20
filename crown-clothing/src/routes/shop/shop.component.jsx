@@ -8,7 +8,7 @@ import CategoriesPreview from "../categories-preview/categories-preview.componen
 
 import Category from "../category/category.component";
 
-import { fetchCategoriesAsync } from "../../store/category/category.action";
+import { fetchCategoriesStart } from "../../store/category/category.action";
 
 import React from "react";
 
@@ -17,9 +17,9 @@ const Shop = () => {
 
   useEffect(() => {
     //following is the regular dispatch which triggers the moment Shop component mounts
-    dispatch(fetchCategoriesAsync());
+    dispatch(fetchCategoriesStart());
   }, []);
-   
+
   return (
     <Routes>
       <Route index element={<CategoriesPreview />} />

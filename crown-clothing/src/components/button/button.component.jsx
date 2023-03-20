@@ -17,6 +17,7 @@ import {
   BaseButton,
   GoogleSignInButton,
   InvertedButton,
+  ButtonSpinner,
 } from "./button.styles.jsx";
 
 //below is the object for types of button to generalise the button component
@@ -36,9 +37,13 @@ const getButton = (buttonType = BUTTON_TYPE_CLASSES.base) =>
 //Below button component will have the props like children, buttonType which will allow us to apply
 //appropriate styling to it
 
-const Button = ({ children, buttonType, ...otherProps }) => {
+const Button = ({ children, buttonType, isLoading, ...otherProps }) => {
   const CustomButton = getButton(buttonType);
-  return <CustomButton {...otherProps}>{children}</CustomButton>;
+  return (
+    <CustomButton disabled={isLoading} {...otherProps}>
+      {isLoading ? <ButtonSpinner /> : children}
+    </CustomButton>
+  );
 };
 
 export default Button;

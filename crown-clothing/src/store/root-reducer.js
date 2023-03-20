@@ -11,3 +11,4 @@ export const rootReducer = combineReducers({
   categories: categoriesReducer,
   cart: cartReducer,
 });
+  
