@@ -19,11 +19,17 @@ export const BaseButton = styled.button`
   cursor: pointer;
   display: flex;
   justify-content: center;
-  align-items:center;
-   &:hover {
+  align-items: center;
+  &:hover {
     background-color: white;
     color: black;
     border: 1px solid black;
+  }
+
+  @media screen and (max-width: 800px) {
+    min-width: 100px;
+    padding: 0 10px;
+    font-size: 12px;
   }
 `;
 
