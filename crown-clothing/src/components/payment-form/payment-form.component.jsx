@@ -57,7 +57,7 @@ const PaymentForm = () => {
     setIsProcessingPayment(false);
 
     if (paymentResult.error) {
-      alert(paymentResult.error);
+      alert("Error occured while processing payment(Check you payment details!)");
     } else {
       if (paymentResult.paymentIntent.status === "succeeded") {
         alert("Payment Successful");

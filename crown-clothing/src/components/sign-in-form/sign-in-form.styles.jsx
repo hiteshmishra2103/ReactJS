@@ -18,7 +18,6 @@ export const SignInContainer = styled.div`
 export const ButtonsContainer = styled.div`
   display: flex;
   justify-content: space-between;
-
   flex-direction: column;
   gap: 10px;
 `;
